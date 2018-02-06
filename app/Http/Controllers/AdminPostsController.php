@@ -24,7 +24,7 @@ class AdminPostsController extends Controller
         //
 
 
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(5);
 
 
 
@@ -58,43 +58,25 @@ class AdminPostsController extends Controller
     public function store(PostsCreateRequest $request)
     {
         //
-
         $input = $request->all();
-
 
         $user = Auth::user();
 
-
         if($file = $request->file('photo_id')){
 
-
             $name = time() . $file->getClientOriginalName();
-
 
             $file->move('images', $name);
 
             $photo = Photo::create(['file'=>$name]);
 
-
             $input['photo_id'] = $photo->id;
-
 
         }
 
-
-
-
         $user->posts()->create($input);
 
-
-
-
         return redirect('/admin/posts');
-
-
-
-
-
 
     }
 
@@ -191,19 +173,16 @@ class AdminPostsController extends Controller
 
     }
 
+    public function post($id){
 
-    public function post($slug){
 
-
-        $post = Post::findBySlugOrFail($slug);
+        $post = Post::findOrFail($id);
 
         $comments = $post->comments()->whereIsActive(1)->get();
 
-
-        return view('post', compact('post','comments'));
-
-
+        return view('post', compact('post', 'comments'));
     }
+
 
 
 

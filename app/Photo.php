@@ -16,7 +16,7 @@ class Photo extends Model
 
 //        return url('/') . $this->uploads . $photo;
 
-        return $this->uploads . $photo;
+        return url('/') . $this->uploads . $photo;
 
     }
 
